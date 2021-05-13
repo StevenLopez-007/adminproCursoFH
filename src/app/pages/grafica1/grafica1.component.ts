@@ -17,6 +17,7 @@ export class Grafica1Component implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+
   }
 
 }
