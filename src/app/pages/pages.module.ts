@@ -12,6 +12,8 @@ import { ProgressComponent } from '../pages/progress/progress.component';
 import { Grafica1Component } from '../pages/grafica1/grafica1.component';
 import { PagesComponent } from '../pages/pages.component';
 import { AccountSettingsComponent } from './account-settings/account-settings.component';
+import { PromesasComponent } from './promesas/promesas.component';
+import { RxjsComponent } from './rxjs/rxjs.component';
 
 ComponentsModule
 
@@ -21,7 +23,9 @@ ComponentsModule
     ProgressComponent,
     Grafica1Component,
     PagesComponent,
-    AccountSettingsComponent
+    AccountSettingsComponent,
+    PromesasComponent,
+    RxjsComponent
   ],
   imports: [
     CommonModule,
