@@ -5,6 +5,11 @@
   animation-fill-mode: both;
 }
 
-#themecolors .selector{
+#themecolors .selector , .cursor{
   cursor: pointer;
+}
+#my-signin2{
+  >div:first-child{
+    width: 100% !important;
+  }
 }
