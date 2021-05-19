@@ -1,12 +1,13 @@
 import { Injectable, NgZone } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { RegisterForm } from '../models/registerForm.model';
+import { RegisterForm } from '../interfaces/registerForm.interface';
 import { environment } from '../../environments/environment';
-import { LoginForm } from '../models/loginForm.model';
+import { LoginForm } from '../interfaces/loginForm.interface';
 import { tap, map, catchError } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
 import { Router } from '@angular/router';
 import { Usuario } from '../models/usuario.model';
+import { CargarUsuario } from '../interfaces/cargar-usuarios.interface';
 
 const base_url = environment.base_url;
 declare var gapi: any;
@@ -99,4 +100,37 @@ export class UsuarioService {
     }));
   }
 
+
+  cargarUsuarios(desde:number = 0){
+    const url = `${base_url}/usuarios?desde=${desde}`;
+    return this.http.get<CargarUsuario>(url,{
+      headers:{
+        'a-token':this.token
+      }
+    }).pipe(
+      map(resp=>{
+        const usuarios = resp.usuarios.map(user=> new Usuario(user.nombre,user.email,'',user.img,user.google,user.role,user.uid))
+        return {
+          total:resp.total,
+          usuarios
+        }
+      })
+    )
+  }
+
+  eliminarUsuario(usuario:Usuario){
+    return this.http.delete(`${base_url}/usuarios/${usuario.uid}`,{
+      headers:{
+        'a-token':this.token
+      }
+    });
+  }
+
+  guardarUsuario(usuario:Usuario) {
+    return this.http.put(`${base_url}/usuarios/${usuario.uid}`, usuario, {
+      headers: {
+        'a-token': this.token
+      }
+    });
+  }
 }

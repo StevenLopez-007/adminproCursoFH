@@ -12,15 +12,15 @@ export class Usuario {
     public uid?: string
   ) { }
 
-  get imagenUrl(){
+  get imagenUrl() {
     // localhost:3005/api/upload/usuarios/no-image
-
-     if(this.img.includes('https')){
+    if (!this.img) {
+      return `${base_url}/uploads/usuarios/no-img`;
+    } else if (this.img.includes('https')) {
       return this.img;
-     }
-    if(this.img){
+    } else if (this.img) {
       return `${base_url}/uploads/usuarios/${this.img}`;
-    }else{
+    } else {
       return `${base_url}/uploads/usuarios/no-img`;
     }
   }
