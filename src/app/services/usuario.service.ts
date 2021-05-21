@@ -31,17 +31,21 @@ export class UsuarioService {
 
   googleInit() {
     return new Promise(resolve => {
-      gapi.load('auth2', () => {
-        // Retrieve the singleton for the GoogleAuth library and set up the client.
-        this.auth2 = gapi.auth2.init({
-          client_id: '839294487035-0eo1sovs9a1dfd9g3udk9dmm4fo3kg0e.apps.googleusercontent.com',
-          cookiepolicy: 'single_host_origin',
-          // Request scopes in addition to 'profile' and 'email'
-          //scope: 'additional_scope'
-        });
+      try {
+        gapi.load('auth2', () => {
+          // Retrieve the singleton for the GoogleAuth library and set up the client.
+          this.auth2 = gapi.auth2.init({
+            client_id: '839294487035-0eo1sovs9a1dfd9g3udk9dmm4fo3kg0e.apps.googleusercontent.com',
+            cookiepolicy: 'single_host_origin',
+            // Request scopes in addition to 'profile' and 'email'
+            //scope: 'additional_scope'
+          });
 
-        resolve(null);
-      });
+          resolve(null);
+        });
+      } catch (error) {
+
+      }
     })
   }
 

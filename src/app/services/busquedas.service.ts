@@ -39,6 +39,12 @@ export class BusquedasService {
           case 'usuarios':{
             return this.transformarUsuarios(resp.resultados)
           }
+          case 'hospitales':{
+            return resp.resultados
+          }
+          case 'medicos':{
+            return resp.resultados
+          }
         }
       })
     )

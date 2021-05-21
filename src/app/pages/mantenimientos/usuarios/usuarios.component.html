@@ -52,7 +52,7 @@
                 <td>{{ usuario.email }}</td>
                 <td>{{ usuario.nombre }}</td>
                 <td>
-                  <select (change)="cambiarRole(usuario)" [(ngModel)]="usuario.role" class="form-control" aria-label="Default select example">
+                  <select #selectValue (change)="cambiarRole(usuario,i,selectValue)" [(ngModel)]="usuario.role" class="form-control" aria-label="Default select example">
                     <option value="ADMIN_ROLE">Admin</option>
                     <option value="USER_ROLE">Usuario</option>
                   </select>

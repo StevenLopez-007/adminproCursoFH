@@ -55,15 +55,19 @@ export class LoginComponent implements OnInit {
 
 
   renderButton() {
-    gapi.signin2.render('my-signin2', {
-      'scope': 'profile email',
-      'width': 240,
-      'height': 50,
-      'longtitle': true,
-      'theme': 'dark',
-    });
+    try {
+      gapi.signin2.render('my-signin2', {
+        'scope': 'profile email',
+        'width': 240,
+        'height': 50,
+        'longtitle': true,
+        'theme': 'dark',
+      });
 
-    this.startApp();
+      this.startApp();
+    } catch (error) {
+
+    }
   }
 
   async startApp() {

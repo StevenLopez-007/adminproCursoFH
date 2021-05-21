@@ -34,7 +34,7 @@ export class UsuariosComponent implements OnInit,AfterViewInit,OnDestroy {
   }
 
   ngAfterViewInit(){
-    this.buscar(this.inputBuscar);
+    this.buscar();
     this.imgSubs = this.modalImagenService.nuevaImagen.subscribe((resp:any)=>this.usuarios[resp.index].img = resp.img);
   }
 
@@ -73,8 +73,8 @@ export class UsuariosComponent implements OnInit,AfterViewInit,OnDestroy {
     this.cargarUsuarios();
   }
 
-  buscar(input:ElementRef){
-    this.busquedasService.inputBuscar(input).subscribe((termino)=>{
+  buscar(){
+    this.busquedasService.inputBuscar(this.inputBuscar).subscribe((termino)=>{
       this.buscando=true;
       if(termino.length ===0){
         this.buscando=false;
@@ -95,8 +95,8 @@ export class UsuariosComponent implements OnInit,AfterViewInit,OnDestroy {
         icon:'question',
         showCancelButton: true,
         cancelButtonColor:'#ef5350 ',
-        confirmButtonText: `Sí, eliminar`,
-        cancelButtonText:'No, cancelar'
+        cancelButtonText:'No, cancelar',
+        confirmButtonText: `Sí, eliminar`
       }).then((result) => {
         /* Read more about isConfirmed, isDenied below */
         if (result.isConfirmed) {
@@ -112,12 +112,17 @@ export class UsuariosComponent implements OnInit,AfterViewInit,OnDestroy {
     }
   }
 
-  cambiarRole(usuario:Usuario){
+  cambiarRole(usuario:Usuario,index:string,selectValue:any){
+    const role = selectValue.value;
+    if(!['ADMIN_ROLE','USER_ROLE'].includes(role)){
+      return Swal.fire('Error', 'No se pudo cambiar el rol del usuario', 'error');
+    }
     this.usuarioService.guardarUsuario(usuario)
-    .subscribe((resp)=>{
-
-    },(error)=>{
-      Swal.fire('Error', 'No se pudo cambiar el rol del usuario', 'error')
+    .subscribe(()=>{
+      this.usuarios[index].role = role;
+    },()=>{
+      Swal.fire('Error', 'No se pudo cambiar el rol del usuario', 'error');
+      this.usuarios[index].role = role=='ADMIN_ROLE'?'USER_ROLE':'ADMIN_ROLE'      ;
     })
   }
 
