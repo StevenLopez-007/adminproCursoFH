@@ -17,96 +17,106 @@ import { HospitalesComponent } from './mantenimientos/hospitales/hospitales.comp
 import { MedicosComponent } from './mantenimientos/medicos/medicos.component';
 import { HospitalesResolver } from '../resolvers/hospitales.resolver';
 import { MedicoComponent } from './mantenimientos/medicos/medico.component';
+import { BusquedasComponent } from './busquedas/busquedas.component';
+import { AdminGuard } from '../guards/admin.guard';
 
-const routes:Routes =[
+const routes: Routes = [
   {
-    path:'dashboard',
-    component:PagesComponent,
-    canActivate:[AuthGuard],
-    children:[
+    path: 'dashboard',
+    component: PagesComponent,
+    canActivate: [AuthGuard],
+    children: [
       {
-        path:'',
-        component:DashboardComponent,
-        data:{
-          title:'Dashboard'
+        path: '',
+        component: DashboardComponent,
+        data: {
+          title: 'Dashboard'
         }
       },
       {
-        path:'progress',
-        component:ProgressComponent,
-        data:{
-          title:'Progress'
+        path: 'progress',
+        component: ProgressComponent,
+        data: {
+          title: 'Progress'
         }
       },
       {
-        path:'grafica1',
-        component:Grafica1Component,
-        data:{
-          title:'Grafica #1'
+        path: 'grafica1',
+        component: Grafica1Component,
+        data: {
+          title: 'Grafica #1'
         }
       },
       {
-        path:'account-settings',
-        component:AccountSettingsComponent,
-        data:{
-          title:'Account-settings'
+        path: 'account-settings',
+        component: AccountSettingsComponent,
+        data: {
+          title: 'Account-settings'
         }
       },
       {
-        path:'promesas',
-        component:PromesasComponent,
-        data:{
-          title:'Promesas'
+        path: 'promesas',
+        component: PromesasComponent,
+        data: {
+          title: 'Promesas'
         }
       },
       {
-        path:'rxjs',
-        component:RxjsComponent,
-        data:{
-          title:'Rxjs'
+        path: 'rxjs',
+        component: RxjsComponent,
+        data: {
+          title: 'Rxjs'
         }
       },
       {
-        path:'perfil',
-        component:PerfilComponent,
+        path: 'perfil',
+        component: PerfilComponent,
+        data: {
+          title: 'Perfil'
+        }
+      },
+      {
+        path:'buscar/:termino',
+        component:BusquedasComponent,
         data:{
-          title:'Perfil'
+          title:'Busquedas'
         }
       },
 
       // Mantenimentos
       {
-        path:'usuarios',
-        component:UsuariosComponent,
-        data:{
-          title:'Usuarios de la aplicacion'
+        path: 'usuarios',
+        component: UsuariosComponent,
+        canActivate:[AdminGuard],
+        data: {
+          title: 'Usuarios de la aplicacion'
         }
       },
       {
-        path:'hospitales',
-        component:HospitalesComponent,
-        data:{
-          title:'Hospitales de la aplicacion'
+        path: 'hospitales',
+        component: HospitalesComponent,
+        data: {
+          title: 'Hospitales de la aplicacion'
         }
       },
       {
-        path:'medicos',
-        component:MedicosComponent,
-        data:{
-          title:'Medicos de la aplicacion'
+        path: 'medicos',
+        component: MedicosComponent,
+        data: {
+          title: 'Medicos de la aplicacion'
         }
       },
       {
-        path:'medico/:id',
-        component:MedicoComponent,
-        data:{
-          title:'Perfil médico'
+        path: 'medico/:id',
+        component: MedicoComponent,
+        data: {
+          title: 'Perfil médico'
         }
       },
       {
-        path:'',
-        redirectTo:'/dashboard',
-        pathMatch:'full'
+        path: '',
+        redirectTo: '/dashboard',
+        pathMatch: 'full'
       }
     ]
   },

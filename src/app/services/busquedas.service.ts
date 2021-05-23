@@ -4,6 +4,8 @@ import { environment } from '../../environments/environment';
 import { debounceTime, distinctUntilChanged, map, startWith } from 'rxjs/operators';
 import { fromEvent, Observable } from 'rxjs';
 import { Usuario } from '../models/usuario.model';
+import { Medico } from '../models/medico.mode';
+import { Hospital } from '../models/hospital.model';
 
 const base_url = environment.base_url;
 
@@ -50,13 +52,20 @@ export class BusquedasService {
     )
   }
 
+  buscarTodo(termino:string){
+    return this.http.get<any>(`${base_url}/todo/${termino}`,this.headers).pipe(
+      map(({usuarios,medicos,hospitales})=>{
+        return {usuarios,medicos,hospitales}
+      })
+    )
+  }
+
   inputBuscar(input:ElementRef){
 
    return fromEvent(input.nativeElement,'keyup')
     .pipe(
       map((ev:any)=>ev.target.value),
-      debounceTime(500),
-      startWith('')
+      debounceTime(500)
     );
   }
 }
