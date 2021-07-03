@@ -4,6 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { PagesModule } from './pages/pages.module';
 import { AuthModule } from './auth/auth.module';
+import { FacebookLoginProvider, SocialLoginModule, SocialAuthServiceConfig } from 'angularx-social-login';
 
 import { AppComponent } from './app.component';
 import { NopagefoundComponent } from './nopagefound/nopagefound.component';
@@ -20,8 +21,20 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     AppRoutingModule,
     PagesModule,
     AuthModule,
+    SocialLoginModule
   ],
-  providers: [],
+  providers: [{
+    provide:'SocialAuthServiceConfig',
+    useValue:{
+      autoLogin:false,
+      providers:[
+        {
+          id:FacebookLoginProvider.PROVIDER_ID,
+          provider:new FacebookLoginProvider('869355990596109')
+        }
+      ]
+    } as SocialAuthServiceConfig
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
