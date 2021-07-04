@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { UsuarioService } from '../../services/usuario.service';
 import Swal from 'sweetalert2';
+import { FacebookLoginProvider, SocialAuthService, SocialUser } from 'angularx-social-login';
+import { switchMap } from 'rxjs/operators';
 
 declare var gapi: any;
 
@@ -15,9 +17,9 @@ export class LoginComponent implements OnInit {
   formSubmitted = false;
   loginForm: FormGroup;
   auth2: any;
-
+  socialUser:SocialUser;
   constructor(private router: Router, private formBuilder: FormBuilder, private usuarioService: UsuarioService,
-              private ngZone:NgZone) {
+              private ngZone:NgZone,private socialAuthService: SocialAuthService) {
     this.loginForm = this.formBuilder.group({
       email: [localStorage.getItem('email') || '', [Validators.required, Validators.email]],
       password: ['', [Validators.required]],
@@ -27,6 +29,12 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     this.renderButton();
+
+    this.socialAuthService.authState.pipe(switchMap((resp:any)=>{
+      return this.usuarioService.loginFacebook(resp.authToken)
+    })).subscribe((user)=>{
+      this.socialUser = user;
+    });
   }
 
   login() {
@@ -51,8 +59,6 @@ export class LoginComponent implements OnInit {
 
     // this.router.navigateByUrl('/')
   }
-
-
 
   renderButton() {
     try {
@@ -87,6 +93,10 @@ export class LoginComponent implements OnInit {
       }, (error: any) => {
         alert(JSON.stringify(error, undefined, 2));
       });
+  }
+
+  loginWithFacebook(): void {
+    this.socialAuthService.signIn(FacebookLoginProvider.PROVIDER_ID);
   }
 
 }

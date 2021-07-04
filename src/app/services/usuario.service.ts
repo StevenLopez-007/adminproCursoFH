@@ -1,3 +1,4 @@
+import { SocialAuthService } from 'angularx-social-login';
 import { Injectable, NgZone } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { RegisterForm } from '../interfaces/registerForm.interface';
@@ -17,7 +18,7 @@ export class UsuarioService {
 
   auth2: any;
   usuario: Usuario;
-  constructor(private http: HttpClient, private router: Router, private ngZone: NgZone) {
+  constructor(private http: HttpClient, private router: Router, private ngZone: NgZone,private socialAuthService: SocialAuthService) {
     this.googleInit();
   }
 
@@ -53,13 +54,15 @@ export class UsuarioService {
     })
   }
 
-  logout() {
+  async logout() {
     localStorage.removeItem('token');
     localStorage.removeItem('menu');
     //TODO:Borrar menu
-    this.auth2.signOut().then(() => {
-      this.ngZone.run(() => this.router.navigateByUrl('/login'));
-    });
+    await Promise.all([
+      this.auth2.signOut(),
+      this.socialAuthService.signOut()
+    ]);
+    this.ngZone.run(() => this.router.navigateByUrl('/login'));
   }
 
   validarToken(): Observable<boolean> {
@@ -107,6 +110,13 @@ export class UsuarioService {
   loginGoogle(token: string) {
     return this.http.post(`${base_url}/login/google`, { token }).pipe(tap((resp: any) => {
       localStorage.setItem('token', resp.token);
+    }));
+  }
+
+  loginFacebook(token:string){
+    return this.http.get(`${environment.base_url}/login/facebook/token`,{params:{access_token:token}}).pipe(tap((resp:any)=>{
+      localStorage.setItem('token',resp.token);
+      this.router.navigateByUrl('/dashboard');
     }));
   }
 
